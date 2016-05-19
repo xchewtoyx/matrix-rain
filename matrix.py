@@ -1,4 +1,4 @@
-#!/usr/bin/env python35
+#!/usr/bin/env python3
 # pylint: disable=missing-docstring
 import curses
 import random
@@ -26,7 +26,7 @@ class Matrix(object):
             self.rain(stdscr)
             stdscr.refresh()
             elapsed = time.time() - start
-            time.sleep(self.delay - elapsed)
+            time.sleep(max([0, self.delay - elapsed]))
 
     def new_line(self):
         line = []
