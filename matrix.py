@@ -32,8 +32,8 @@ class Matrix(object):
         line = []
         for column, live in enumerate(self.is_live):
             roll = random.random()
-            if ((live and roll > self.chance_off) or
-                (not live and roll > self.chance_off)):
+            if (live and roll > self.chance_off) or (
+                    not live and roll > self.chance_on):
                 self.is_live[column] = not live
             if live:
                 line.append(random.choice(self.charset))
