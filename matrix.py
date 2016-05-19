@@ -28,18 +28,20 @@ class Matrix(object):
             elapsed = time.time() - start
             time.sleep(max([0, self.delay - elapsed]))
 
-    def new_line(self):
-        line = []
+    def new_line(self, stdscr):
+        color = curses.color_pair(1) | curses.A_DIM
         for column, live in enumerate(self.is_live):
             roll = random.random()
-            if (live and roll > self.chance_off) or (
-                    not live and roll > self.chance_on):
-                self.is_live[column] = not live
-            if live:
-                line.append(random.choice(self.charset))
+            if not live and roll > self.chance_on:
+                self.is_live[column] = True
+                stdscr.attrset(curses.A_BOLD)
+            if live and roll > self.chance_off:
+                self.is_live[column] = False
+            if self.is_live[column]:
+                stdscr.addch(random.choice(self.charset), color)
             else:
-                line.append(' ')
-        return ''.join(line)
+                stdscr.addch(' ')
+            stdscr.attroff(curses.A_BOLD)
 
     def rain(self, stdscr):
         (dummy, columns) = stdscr.getmaxyx()
@@ -47,7 +49,7 @@ class Matrix(object):
             self.is_live = [False] * columns
         stdscr.move(0, 0)
         stdscr.insertln()
-        stdscr.addstr(0, 0, self.new_line(), curses.color_pair(1))
+        self.new_line(stdscr)
 
 
 def main():
