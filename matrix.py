@@ -32,16 +32,18 @@ class Matrix(object):
         color = curses.color_pair(1)
         for column, live in enumerate(self.is_live):
             roll = random.random()
+            attr = color
             if not live and roll > self.chance_on:
+                live = True
                 self.is_live[column] = True
-                stdscr.attrset(curses.A_BOLD)
-            if live and roll > self.chance_off:
+                attr = color | curses.A_BOLD
+            elif live and roll > self.chance_off:
                 self.is_live[column] = False
-            if self.is_live[column]:
-                stdscr.addch(random.choice(self.charset), color)
+                attr = color | curses.A_DIM
+            if live:
+                stdscr.addch(random.choice(self.charset), attr)
             else:
                 stdscr.addch(' ')
-            stdscr.attroff(curses.A_BOLD)
 
     def rain(self, stdscr):
         (dummy, columns) = stdscr.getmaxyx()
