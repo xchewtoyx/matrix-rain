@@ -29,7 +29,7 @@ class Matrix(object):
             time.sleep(max([0, self.delay - elapsed]))
 
     def new_line(self, stdscr):
-        color = curses.color_pair(1) | curses.A_DIM
+        color = curses.color_pair(1)
         for column, live in enumerate(self.is_live):
             roll = random.random()
             if not live and roll > self.chance_on:
